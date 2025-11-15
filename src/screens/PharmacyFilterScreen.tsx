@@ -13,8 +13,8 @@ type FilterRouteParams = {
 export default function PharmacyFilterScreen() {
   const route = useRoute<RouteProp<FilterRouteParams, 'PharmacyFilterScreen'>>();
   const navigation = useNavigation();
-  const [onlyOpen, setOnlyOpen] = useState(false);
-  const [city, setCity] = useState("");
+  const [onlyOpen, setOnlyOpen] = useState(route.params?.initialFilters?.onlyOpen || false);
+  const [city, setCity] = useState(route.params?.initialFilters?.city || '');
 
 const handleApplyFilters = () => {
   const result = { onlyOpen, city }; 

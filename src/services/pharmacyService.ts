@@ -34,12 +34,21 @@ export const getOpenPharmacies = async (): Promise<Pharmacy[]> => {
   }
 };
 
-    export const getAllmedicinePharmacies = async (medicinesName: string[]): Promise<SearhMedicinesResponse[]> => {
-      try {
-        const response = await axios.post(`${baseUrl}search/prescription/all`, { medicaments :medicinesName });
-        return response.data;
-      } catch (error) {
-        console.error("Erreur lors de la récupération des pharmacies qu'ont ces medicaments :", error);
-        throw error;
-      }
-    };
+  export const getAllmedicinePharmacies = async (medicinesName: string[]): Promise<SearhMedicinesResponse[]> => {
+    try {
+      const response = await axios.post(`${baseUrl}search/prescription/all`, { medicaments :medicinesName });
+      return response.data;
+    } catch (error) {
+      console.error("Erreur lors de la récupération des pharmacies qu'ont ces medicaments :", error);
+      throw error;
+    }
+  };
+  export const getAllOpenMedicinePharmacies = async (medicinesName: string[]): Promise<SearhMedicinesResponse[]> => {
+    try {
+      const response = await axios.post(`${baseUrl}search/prescription/open`, { medicaments :medicinesName });
+      return response.data;
+    } catch (error) {
+      console.error("Erreur lors de la récupération des pharmacies qu'ont ces medicaments :", error);
+      throw error;
+    }
+  };

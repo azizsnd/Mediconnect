@@ -9,15 +9,20 @@ import {
   ActivityIndicator,
 } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
-import { getAllmedicinePharmacies, getAllPharmacies } from "../services/pharmacyService";
-import { SearhMedicinesResponse } from "../Types";
+import { getAllmedicinePharmacies, getAllOpenMedicinePharmacies, getAllPharmacies } from "../services/pharmacyService";
+import { Pharmacy, SearhMedicinesResponse } from "../Types";
 import PharmacyIcon from "../../assets/pharmacy.svg";
 import { getPharmacyStatus } from "../utils/pharmacyStatus";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
+
 type RootStackParamList = {
   MedicinePharmaciesScreen: { medicinesName: string[] };
+  PharmacyFilterScreen: {
+    initialFilters?: { onlyOpen?: boolean; city?: string };
+    onApply?: (filters: { onlyOpen?: boolean; city?: string }) => void;
+  };
 };
 
 type NavigationProp = NativeStackNavigationProp<
@@ -30,21 +35,26 @@ type RouteProps = RouteProp<
   "MedicinePharmaciesScreen"
 >;
 
-
 export default function MedicinePharmaciesScreen() {
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProps>();
-
   const { medicinesName } = route.params;
-  console.log("Medicine ID:", medicinesName);
   const [pharmacies, setPharmacies] = useState<SearhMedicinesResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [filters, setFilters] = useState<{ onlyOpen?: boolean; city?: string }>({});
 
   useEffect(() => {
     const loadPharmacies = async () => {
       try {
-        let data = await getAllmedicinePharmacies(medicinesName);         
+        let data = filters.onlyOpen ? await getAllOpenMedicinePharmacies(medicinesName) : await getAllmedicinePharmacies(medicinesName);
+      
+        if (filters.city) {
+          const city = filters.city!; 
+          data = data.filter((p) =>
+            p.pharmacy.address.city.toLowerCase().includes(city.toLowerCase())
+          );}  
+
         setPharmacies(data.filter((item) => item.matchPercentage === 100));
       } catch (error) {
         console.error("Erreur lors du chargement :", error);
@@ -54,7 +64,7 @@ export default function MedicinePharmaciesScreen() {
     };
 
     loadPharmacies();
-  }, []);
+  }, [filters]);
 
   const filteredPharmacies = pharmacies.filter((p) =>
     p.pharmacy.name.toLowerCase().includes(search.toLowerCase())
@@ -72,7 +82,14 @@ export default function MedicinePharmaciesScreen() {
       </View>
     );
   }
-
+  const handleNavigate = () => {
+    navigation.navigate("PharmacyFilterScreen", {
+      initialFilters: filters,
+      onApply: (newFilters: { onlyOpen?: boolean; city?: string }) => {
+        setFilters(newFilters);
+      },
+    });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
@@ -92,7 +109,7 @@ export default function MedicinePharmaciesScreen() {
 
         <TouchableOpacity
           style={styles.filterButton}
-          onPress={() => navigation.navigate("PharmacyFilterScreen" as never)}
+          onPress={handleNavigate}
         >
           <Icon name="sliders" size={18} color="#fff" />
         </TouchableOpacity>

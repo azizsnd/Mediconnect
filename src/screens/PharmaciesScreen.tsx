@@ -14,7 +14,7 @@ import { getAllPharmacies, getOpenPharmacies } from "../services/pharmacyService
 import { Pharmacy } from "../Types";
 import PharmacyIcon from "../../assets/pharmacy.svg";
 import { getPharmacyStatus } from "../utils/pharmacyStatus";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 type RootStackParamList = {
@@ -74,7 +74,6 @@ export default function PharmaciesScreen() {
     navigation.navigate("PharmacyFilterScreen", {
       initialFilters: filters,
       onApply: (newFilters: { onlyOpen?: boolean; city?: string }) => {
-        // update local state and refetch
         setFilters(newFilters);
       },
     });
