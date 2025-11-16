@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AuthNavigator from "./AuthNavigator";
 import AppNavigator from "./AppNavigator";
 import { AuthContext } from "../../contexts/AuthContext";
+import DrawerNavigator from "./DrawerNavigator";
 
 export type RootStackParamList = {
   Auth: undefined;
@@ -17,7 +18,7 @@ export default function RootNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {isSignedIn ? (
-        <Stack.Screen name="Main" component={AppNavigator} />
+        <Stack.Screen name="Main" component={DrawerNavigator} />
       ) : (
         <Stack.Screen name="Auth" component={AuthNavigator} />
       )}

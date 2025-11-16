@@ -1,8 +1,11 @@
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 
 const Header = () => {
+const drawerNavigation = useNavigation<DrawerNavigationProp<any>>();
   return (
     <View style={styles.header}>
       <Text style={styles.logo}>MEDICONNECT</Text>
@@ -13,7 +16,7 @@ const Header = () => {
         <TouchableOpacity style={{ marginHorizontal: 15 }}>
           <Icon name="message-circle" size={22} color="#1F2B6C" />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => drawerNavigation.openDrawer()}>
           <Icon name="menu" size={24} color="#1F2B6C" />
         </TouchableOpacity>
       </View>
