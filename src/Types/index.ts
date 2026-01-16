@@ -26,7 +26,7 @@ export interface Medicine {
 export interface SearhMedicinesResponse {
   pharmacy: Pharmacy;
   stockStatus: {
-    medicament: Medicine[], 
+    medicament: Medicine, 
     isAvailable: boolean;
   }[];
   matchPercentage: number;

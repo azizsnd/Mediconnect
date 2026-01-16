@@ -17,14 +17,13 @@ type NavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Login'>;
 const LoginScreen = () => {
   const navigation = useNavigation<NavigationProp>();
 
-  const { signIn } = useContext(AuthContext); // ✅ On récupère signIn ici
+  const { signIn } = useContext(AuthContext); 
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Ici tu peux ajouter une vraie requête API plus tard
-    signIn(); // ✅ Cela bascule automatiquement vers AppNavigator
+    signIn(); 
   };
 
   return (
